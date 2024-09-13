@@ -12,7 +12,6 @@
 
   Modified to compose an AP SSID from a model name and the built in MAC.
   A MAC is 17 characters long because of the delimiters. Each character is two bytes.
-  
   Forrest Lee Erickson, 20240913
 
 */
@@ -23,22 +22,16 @@
 
 #define LED_BUILTIN 2   // Set the GPIO pin where you connected your test LED or comment this line out if your dev board has a built-in LED
 
-// Set a model name
-//const char *modelName = "PlaceHolderModel"; // Must be less than 32 characters long.
-//const char *modelName = "PMD20240913"; // Must be less than 32 characters long.
-//                      "12345678901234567890123456789012" for 32 characters
-const char *modelName = "Foo"; // Must be less than 32 characters long.
+// Set a model name     "12345678" for 8 characters
+const char *modelName = "AbcdefgH"; // Must be less than 8 characters long.
 
 // Buffer for the access point name
-char apName[sizeof(*modelName) + 34];  // Adjust size based on your needs. Two bytes per char.
-
+char apName[sizeof(*modelName) + 24];  // Adjust size based on your needs. Two bytes per char.
 
 // Set these to your desired credentials.
-//const char *ssid = "yourAP";
 const char *password = "yourPassword";
 
 WiFiServer server(80);
-
 
 void setup() {
   pinMode(LED_BUILTIN, OUTPUT);
@@ -49,15 +42,12 @@ void setup() {
   Serial.println(WiFi.macAddress());
   Serial.println("Configuring access point...");
 
-  // You can remove the password parameter if you want the AP to be open.
-  //  WiFi.softAP(ssid, password);
-
   // Initialize WiFi in AP mode
   WiFi.mode(WIFI_AP);
-  String mac = WiFi.macAddress();   // Get the MAC address and convert it to a string
-  mac.replace(":", "_"); // Replace colons ':' in MAC with underscores '_'
-  snprintf(apName, sizeof(apName), "%s_%s", modelName, mac.c_str());   // Construct the AP name by concatenating the model name and the MAC address
-  WiFi.softAP(apName, password);   // Start the access point with the generated name
+  String mac = WiFi.macAddress();                                       // Get the MAC address and convert it to a string
+  mac.replace(":", "");                                                 // Removes colons ':' in MAC 
+  snprintf(apName, sizeof(apName), "%s_%s", modelName, mac.c_str());   // Construct the AP name 
+  WiFi.softAP(apName, password);                                        // Remove the password if you want the AP to be open.
   Serial.print("Access Point Name: ");
   Serial.println(apName);
 
@@ -91,6 +81,7 @@ void loop() {
             client.println();
 
             // the content of the HTTP response follows the header:
+            client.print("<h1>WiFiAccessPointWithMAC</h1>");
             client.print("Click <a href=\"/H\">here</a> to turn ON the LED.<br>");
             client.print("Click <a href=\"/L\">here</a> to turn OFF the LED.<br>");
 
