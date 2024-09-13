@@ -12,6 +12,6 @@ To use this, the phisical device will need to have a lable or display with the S
 
 ## In action  
 A screen shot of the found networks from an Android phone with two devices.  
-![image](https://github.com/user-attachments/assets/75b8d6ca-2d95-4174-841d-5c83eae23363) 
+![image](https://github.com/user-attachments/assets/75b8d6ca-2d95-4174-841d-5c83eae23363)  
 In this case the Model Name was, "AbcdefgH".  
 An underscore separates the model name from the MAC address.
